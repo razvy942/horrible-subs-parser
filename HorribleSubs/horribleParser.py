@@ -3,7 +3,8 @@ import requests
 from enum import Enum
 import pprint
 
-from HorribleSubs import dynamicLoading
+#from HorribleSubs import dynamicLoading
+
 
 TORRENT_SITE = 'https://xdcc.horriblesubs.info/?search='
 SHOW_TITLE = '[HorribleSubs] One Piece - 913 [1080p]'
