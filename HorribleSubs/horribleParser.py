@@ -27,6 +27,7 @@ class HorribleSubsParser:
         self.current_season = []
         self.all_shows = []
         self.current_show = None
+        self.shows_dict = {}
 
     def construct_show_name(self, show_name, episode_number):
         resolutions = {
@@ -61,6 +62,7 @@ class HorribleSubsParser:
         found_shows = []
         for show in shows:
             found_shows.append((show.get_text(), show.select('a')[0]['href']))
+            self.shows_dict[show.get_text()] = show.select('a')[0]['href']
         return found_shows
 
     def get_latest(self):
@@ -110,3 +112,4 @@ if __name__ == '__main__':
     horrible_parser.get_all_shows()
     print("ALL SHOWS\n")
     pprint.pprint(horrible_parser.all_shows)
+    pprint.pprint(horrible_parser.shows_dict)
