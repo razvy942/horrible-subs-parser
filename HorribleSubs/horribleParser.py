@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 from enum import Enum
 import pprint
+import json
 
 #from HorribleSubs import dynamicLoading
 
@@ -24,10 +25,11 @@ class HorribleSubsParser:
     def __init__(self):
         self.current_page = 0
         self.recent_releases = {}
-        self.current_season = []
+        self.current_season = {}
         self.all_shows = []
         self.current_show = None
         self.shows_dict = {}
+        self.db = {}
 
     def construct_show_name(self, show_name, episode_number):
         resolutions = {
@@ -43,26 +45,49 @@ class HorribleSubsParser:
         self.current_show = f'https://xdcc.horriblesubs.info/?search={horrible_show_name["1080p"]}'
         # return f'https://xdcc.horriblesubs.info/?search={horrible_show_name["1080p"]}'
 
+    def get_show_info(self, show_path, name):
+        url = f'https://horriblesubs.info{show_path}'
+        html_doc = requests.get(url)
+        soup = BeautifulSoup(html_doc.content, features='lxml')
+        description =  soup.find('div', {'class': 'series-desc'})
+        img_source = soup.find('div', {'class': 'series-image'})
+
+        print(f'Parsed {url}')
+        self.db[name] = {
+            'desc': description.text,
+            'img': img_source.select('img')[0]['src']
+        }
+
+        return {
+            'desc': description.text,
+            'img': img_source.select('img')[0]['src']
+        }
+
     def get_episodes(self):
         # use functions from dynamic loading
         pass
 
     def get_all_shows(self):
-        self.all_shows = self.__get_shows('https://horriblesubs.info/shows/')
+        if not len(self.shows_dict) > 0:
+            self.__get_shows('https://horriblesubs.info/shows/')
 
     def get_current_season_releases(self):
-        self.current_season = self.__get_shows(
-            'https://horriblesubs.info/current-season/')
+        if not len(self.current_season) > 0:
+            self.__get_shows(
+                'https://horriblesubs.info/current-season/', True)
 
     # Current season and all shows use the same html format, this method returns info for both
-    def __get_shows(self, source):
+    def __get_shows(self, source, current_season=False):
         html_doc = requests.get(source)
         soup = BeautifulSoup(html_doc.content, features='lxml')
         shows = soup.findAll("div", {"class": "ind-show"})
         found_shows = []
         for show in shows:
             found_shows.append((show.get_text(), show.select('a')[0]['href']))
-            self.shows_dict[show.get_text()] = show.select('a')[0]['href']
+            if not current_season:
+                self.shows_dict[show.get_text()] = show.select('a')[0]['href']
+            else:
+                self.current_season[show.get_text()] = show.select('a')[0]['href']
         return found_shows
 
     def get_latest(self):
@@ -90,8 +115,22 @@ class HorribleSubsParser:
     #     return self.recent_releases
 
 
+from concurrent.futures import ThreadPoolExecutor
+import threading
+
+
+def thread_fun(i):
+    print(i)
+    
+
 if __name__ == '__main__':
     horrible_parser = HorribleSubsParser()
+    
+    with open('series-db.json', 'r') as in_file:
+        db = json.load(in_file)
+        pprint.pprint(db)
+        print(len(db))
+
     # latest_releases_gen = horrible_parser.get_latest()
     # # Getting latest
     # next(latest_releases_gen)
@@ -107,9 +146,27 @@ if __name__ == '__main__':
     #         print('That\'s all')
     #         break
 
-    horrible_parser.get_current_season_releases()
-    pprint.pprint(horrible_parser.current_season)
-    horrible_parser.get_all_shows()
-    print("ALL SHOWS\n")
-    pprint.pprint(horrible_parser.all_shows)
-    pprint.pprint(horrible_parser.shows_dict)
+    # horrible_parser.get_current_season_releases()
+    # pprint.pprint(horrible_parser.current_season)
+   
+    # print("ALL SHOWS\n")
+    # keys = [*horrible_parser.shows_dict.keys()]
+    # info = horrible_parser.get_show_info(horrible_parser.shows_dict[keys[0]])
+    # pprint.pprint(info)
+    # pprint.pprint(horrible_parser.all_shows)
+    # pprint.pprint(horrible_parser.shows_dict)
+
+   
+    # buff = []
+    # horrible_parser.get_all_shows()
+    # buff = [*horrible_parser.shows_dict.keys()]
+    # with ThreadPoolExecutor(max_workers=5) as executor:
+    #     while len(buff) > 0:
+    #         item = buff.pop()
+    #         executor.submit(horrible_parser.get_show_info, horrible_parser.shows_dict[item], item)
+
+
+
+
+
+    
