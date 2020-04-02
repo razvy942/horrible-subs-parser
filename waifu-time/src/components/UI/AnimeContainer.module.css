@@ -1,0 +1,23 @@
+.box {
+  max-width: 10vw;
+  min-width: 100px;
+  min-height: 300px;
+  padding: 5px;
+  margin: 5px;
+  border-radius: 2%;
+  box-shadow: 0 0 15px #cdcdcd;
+  transition: 0.1s;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.box:hover {
+  cursor: pointer;
+  box-shadow: 0 0 15px #8e8e8e;
+}
+
+img {
+  width: 100%;
+  height: auto;
+}

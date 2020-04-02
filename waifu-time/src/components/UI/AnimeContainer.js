@@ -1,11 +1,13 @@
 import React from 'react';
+import classes from './AnimeContainer.module.css';
 
-const AnimeContainer = ({ seriesImage, seriesDesc }) => {
+const AnimeContainer = ({ seriesTitle, seriesImage, seriesDesc }) => {
   const img = formatImage(seriesImage);
 
   return (
-    <div>
-      <p>{seriesDesc}</p>
+    <div className={classes.box}>
+      <p>{seriesTitle}</p>
+      {/* <p>{seriesDesc}</p> */}
       <img src={img} />
     </div>
   );

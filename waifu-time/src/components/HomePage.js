@@ -3,6 +3,7 @@ import axios from 'axios';
 
 import AnimeContainer from './UI/AnimeContainer';
 import test from '../helpers/aniListApiWrapper';
+import classes from './MainPage.module.css';
 
 const HomePage = () => {
   const [currentSeasonShows, setCurrentSeasonShows] = useState(null);
@@ -24,19 +25,21 @@ const HomePage = () => {
   return (
     <div>
       <h1>Latest Releases</h1>
-      {currentSeasonShows ? (
-        Object.keys(currentSeasonShows).map((show, index) => (
-          <>
-            <p key={index}>{show}</p>
-            <AnimeContainer
-              seriesDesc={currentSeasonShows[show].desc}
-              seriesImage={currentSeasonShows[show].img}
-            />
-          </>
-        ))
-      ) : (
-        <p>loading...</p>
-      )}
+      <div className={classes.container}>
+        {currentSeasonShows ? (
+          Object.keys(currentSeasonShows).map((show, index) => (
+            <div key={index}>
+              <AnimeContainer
+                seriesTitle={show}
+                seriesDesc={currentSeasonShows[show].desc}
+                seriesImage={currentSeasonShows[show].img}
+              />
+            </div>
+          ))
+        ) : (
+          <p>loading...</p>
+        )}
+      </div>
     </div>
   );
 };
