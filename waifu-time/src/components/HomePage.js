@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+import AnimeContainer from './UI/AnimeContainer';
 import test from '../helpers/aniListApiWrapper';
 
 const HomePage = () => {
@@ -25,7 +26,13 @@ const HomePage = () => {
       <h1>Latest Releases</h1>
       {currentSeasonShows ? (
         Object.keys(currentSeasonShows).map((show, index) => (
-          <p key={index}>{show}</p>
+          <>
+            <p key={index}>{show}</p>
+            <AnimeContainer
+              seriesDesc={currentSeasonShows[show].desc}
+              seriesImage={currentSeasonShows[show].img}
+            />
+          </>
         ))
       ) : (
         <p>loading...</p>

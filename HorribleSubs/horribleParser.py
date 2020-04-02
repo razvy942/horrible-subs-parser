@@ -52,7 +52,7 @@ class HorribleSubsParser:
         description =  soup.find('div', {'class': 'series-desc'})
         img_source = soup.find('div', {'class': 'series-image'})
 
-        print(f'Parsed {url}')
+        # print(f'Parsed {url}')
         self.db[name] = {
             'desc': description.text,
             'img': img_source.select('img')[0]['src']
@@ -111,8 +111,21 @@ class HorribleSubsParser:
             else:
                 self.recent_releases[date].append(show_name[len(date):])
 
-    # def __str__(self):
-    #     return self.recent_releases
+    # Using 5 worker threads for faster scraping
+    def __construct_db(self):
+        buff = []
+        self.get_all_shows()
+        buff = [*self.shows_dict.keys()]
+        with ThreadPoolExecutor(max_workers=5) as executor:
+            while len(buff) > 0:
+                item = buff.pop()
+                executor.submit(self.get_show_info, self.shows_dict[item], item)
+        # Writing results to json file
+        with open('series-db.json', 'w') as out_db:
+            json.dump(self.db, out_db)
+
+    def __str__(self):
+        return self.recent_releases
 
 
 from concurrent.futures import ThreadPoolExecutor
@@ -157,13 +170,7 @@ if __name__ == '__main__':
     # pprint.pprint(horrible_parser.shows_dict)
 
    
-    # buff = []
-    # horrible_parser.get_all_shows()
-    # buff = [*horrible_parser.shows_dict.keys()]
-    # with ThreadPoolExecutor(max_workers=5) as executor:
-    #     while len(buff) > 0:
-    #         item = buff.pop()
-    #         executor.submit(horrible_parser.get_show_info, horrible_parser.shows_dict[item], item)
+
 
 
 
