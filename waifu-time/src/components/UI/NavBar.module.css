@@ -42,6 +42,21 @@ a:hover {
   animation-name: fadein;
 }
 
+.closeButton {
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2em;
+}
+
+.closeButton:hover {
+  cursor: pointer;
+  color: #8e8e8e;
+}
+
 @keyframes fadein {
   from {
     background-color: rgba(0, 0, 0, 0);

@@ -2,9 +2,9 @@ from flask import request, jsonify
 import json
 import pprint
 
-from HorribleSubs import app, pg_db, parser
+from HorribleSubs import bp, pg_db, series_db, parser
 
-@app.route('/horriblesubs/get-all', methods=['GET'])
+@bp.route('/horriblesubs/get-all', methods=['GET'])
 def get_main_page():
     # shows = parser.get_all_shows()
     current_page = int(request.args.get('page', '1'))
@@ -13,7 +13,7 @@ def get_main_page():
         pg_db[current_page]
     )
 
-@app.route('/horriblesubs/get-latest')
+@bp.route('/horriblesubs/get-latest')
 def get_latest_releases():
     parser.get_current_season_releases()
     with open('series-db.json') as db:
@@ -31,8 +31,15 @@ def get_latest_releases():
         info
     )
 
+@bp.route('/horriblesubs/get-show/<title>')
+def get_show(title):
+    info = {}
+    info[title] = series_db[title]
+
+    return jsonify(info)
+
 # TODO: Create database to store shows and their links in for easier search
-@app.route('/horriblesubs/search')
+@bp.route('/horriblesubs/search')
 def search_horriblesubs():
     show_name = request.args.get('q')
     show = {show_name: parser.shows_dict.get(show_name, 'not found')}

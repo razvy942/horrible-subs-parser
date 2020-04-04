@@ -1,15 +1,19 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+
 import classes from './AnimeContainer.module.css';
 
 const AnimeContainer = ({ seriesTitle, seriesImage, seriesDesc }) => {
   const img = formatImage(seriesImage);
 
   return (
-    <div className={classes.box}>
-      <p>{seriesTitle}</p>
-      {/* <p>{seriesDesc}</p> */}
-      <img src={img} />
-    </div>
+    <Link to={`/show/${seriesTitle}`}>
+      <div className={classes.box}>
+        <p>{seriesTitle}</p>
+        {/* <p>{seriesDesc}</p> */}
+        <img src={img} alt={`Cover art for ${seriesTitle}`} />
+      </div>
+    </Link>
   );
 };
 

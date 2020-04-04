@@ -2,15 +2,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import AnimeContainer from './UI/AnimeContainer';
-import test from '../helpers/aniListApiWrapper';
 import classes from './MainPage.module.css';
 
 const HomePage = () => {
   const [currentSeasonShows, setCurrentSeasonShows] = useState(null);
 
   useEffect(() => {
-    test();
-
     axios
       .get('http://localhost:5000/horriblesubs/get-latest')
       .then(res => {

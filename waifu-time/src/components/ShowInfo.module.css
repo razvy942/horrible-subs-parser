@@ -1,0 +1,23 @@
+.container {
+  width: 60%;
+  margin: 90px auto;
+}
+
+.infoContainer {
+  display: flex;
+  text-align: justify;
+  font-size: 1.1em;
+}
+
+.leftView {
+  width: 35%;
+  margin-bottom: 20px;
+}
+
+.rightView {
+  width: 75%;
+}
+
+.showInfoImg {
+  width: 257px;
+}

@@ -1,12 +1,14 @@
-from flask import Flask
 import os
+from flask import Flask, Blueprint
 from flask_cors import CORS, cross_origin
 import json
 from HorribleSubs import horribleParser
 
-app = Flask(__name__)
-app.config.from_pyfile(os.path.join('..', 'env.cfg'))
-CORS(app, resources={r"/*": {"origins": "*"}})
+
+# app = Flask(__name__)
+bp = Blueprint("HorribleSubs", __name__)
+# app.config.from_pyfile(os.path.join('..', 'env.cfg'))
+# CORS(app, resources={r"/*": {"origins": "*"}})
 
 # TODO: database setup, etc...
 with open('series-db.json') as db:
