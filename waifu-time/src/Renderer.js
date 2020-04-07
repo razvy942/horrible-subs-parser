@@ -4,6 +4,7 @@ import { ReactMPV } from 'mpv.js';
 import { remote } from 'electron';
 import classes from './Renderer.module.css';
 // import ReactMPV from './helpers/NewMPV'asd;
+import { withRouter } from 'react-router-dom';
 
 class Renderer extends React.PureComponent {
   mpv = null;
@@ -41,7 +42,12 @@ class Renderer extends React.PureComponent {
     const observe = mpv.observe.bind(mpv);
     ['pause', 'time-pos', 'duration', 'eof-reached'].forEach(observe);
     this.mpv.property('hwdec', 'auto');
-    this.mpv.command('loadfile', '.\\vid.mkv');
+    //this.mpv.command('loadfile', '.\\vid.mkv');
+    let vidPath = '\\vid.mkv';
+    if (this.props.location.state) {
+      vidPath = this.props.location.state.path;
+    }
+    this.mpv.command('loadfile', vidPath);
   }
 
   handlePropertyChange(name, value) {
@@ -136,4 +142,4 @@ class Renderer extends React.PureComponent {
   }
 }
 
-export default Renderer;
+export default withRouter(Renderer);

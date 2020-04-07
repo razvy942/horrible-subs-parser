@@ -1,21 +1,36 @@
 import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
+
+import Download from '../helpers/Download';
 import classes from './ShowInfo.module.css';
 
-const ShowInfo = props => {
+const ShowInfo = (props) => {
   const [showInfo, setShowInfo] = useState(null);
   const [error, setError] = useState(false);
+  const [magnetURI, setMagnetURI] = useState([]);
 
   useEffect(() => {
     const title = props.match.params.title;
 
     axios
       .get(`http://127.0.0.1:5000/horriblesubs/get-show/${title}`)
-      .then(res => {
+      .then((res) => {
         setShowInfo(res.data);
       })
-      .catch(err => {
+      .catch((err) => {
+        console.log(`Error fetching ${title}'s details: ${err}`);
+        setError(true);
+      });
+
+    // Get magnets
+    axios
+      .get(`http://127.0.0.1:5000/horriblesubs/get-episode/${title}/${'01'}`)
+      .then((res) => {
+        setMagnetURI(res.data);
+        console.log(res.data);
+      })
+      .catch((err) => {
         console.log(`Error fetching ${title}'s details: ${err}`);
         setError(true);
       });
@@ -56,6 +71,23 @@ const ShowInfo = props => {
       )}
       <hr />
       <h1>Episodes</h1>
+      {magnetURI ? (
+        <div>
+          here is ur episode
+          {magnetURI.map((show, index) => {
+            return Object.keys(show).map((key, index2) => {
+              return (
+                <div>
+                  {key}: {show[key]['720p']}
+                  <Download magnetURI={show[key]['720p']} />
+                </div>
+              );
+            });
+          })}
+        </div>
+      ) : (
+        <div>fetching</div>
+      )}
     </div>
   );
 };

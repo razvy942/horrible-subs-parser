@@ -2,7 +2,8 @@ from flask import request, jsonify
 import json
 import pprint
 
-from HorribleSubs import bp, pg_db, series_db, parser
+from HorribleSubs import bp, pg_db, series_db, parser, nyaa
+
 
 @bp.route('/horriblesubs/get-all', methods=['GET'])
 def get_main_page():
@@ -44,4 +45,9 @@ def search_horriblesubs():
     show_name = request.args.get('q')
     show = {show_name: parser.shows_dict.get(show_name, 'not found')}
     return jsonify(show)
+
+@bp.route('/horriblesubs/get-episode/<title>/<episode_number>')
+def get_ep(title, episode_number):
+    shows = nyaa.get_magnet(title, '01')
+    return jsonify(shows)
 

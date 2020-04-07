@@ -1,6 +1,8 @@
 const path = require('path');
-const { BrowserWindow, app } = require('electron');
+const { BrowserWindow, app, ipcMain } = require('electron');
 const { getPluginEntry } = require('mpv.js');
+
+const torrent = require('../torrent/index');
 
 const pdir = path.join(__dirname);
 if (process.platform !== 'linux') {
@@ -24,6 +26,21 @@ app.on('ready', () => {
   win.loadURL('http://localhost:3000/');
 
   win.webContents.openDevTools();
+
+  // torrent.startDownload().then((msg) => {
+  //   torrent.getInfo();
+  // });
+});
+
+ipcMain.on('add-torrent', (event, arg) => {
+  console.log('hello i am adding new torrent: ' + arg);
+  torrent.startDownload(arg);
+  event.reply('add-torrent-reply', 'TORRENT ADDED!!!!');
+});
+
+ipcMain.on('get-torrent-info', (event, arg) => {
+  const info = torrent.getInfo();
+  event.reply('get-torrent-info-reply', info);
 });
 
 app.on('window-all-closed', () => {
