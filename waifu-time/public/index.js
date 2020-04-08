@@ -4,8 +4,16 @@ const { getPluginEntry } = require('mpv.js');
 
 const torrent = require('../torrent/index');
 
-const pdir = path.join(__dirname);
+let pdir = path.join(__dirname);
 if (process.platform !== 'linux') {
+  process.chdir(pdir);
+}
+
+if (process.platform === 'darwin') {
+  pdir = path.join(__dirname, 'mac-mpv-binary');
+  process.chdir(pdir);
+} else if (process.platform === 'win32') {
+  pdir = path.join(__dirname, 'windows-mpv-binary');
   process.chdir(pdir);
 }
 
