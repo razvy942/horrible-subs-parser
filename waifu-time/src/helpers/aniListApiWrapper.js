@@ -3,35 +3,39 @@ import axios from 'axios';
 const url = 'https://graphql.anilist.co';
 const options = {
   'Content-Type': 'application/json',
-  Accept: 'application/json'
+  Accept: 'application/json',
 };
 
-function test() {
+function getInfo(title, modifyState) {
   const query = `
-query ($id: Int, $page: Int, $perPage: Int, $search: String) {
-  Page (page: $page, perPage: $perPage) {
-    pageInfo {
-      total
-      currentPage
-      lastPage
-      hasNextPage
-      perPage
-    }
-    media (id: $id, search: $search) {
+query ($id: Int, $search: String) {
+    Media (id: $id, search: $search) {
       id
       title {
         romaji
         english
+        native
       }
-    }
+      episodes
+      description(asHtml: false)
+      startDate {
+        year
+        month
+      }
+      season
+      seasonYear
+      bannerImage
+      coverImage {
+        large
+        medium
+      }
+      averageScore      
   }
 }
 `;
 
   const variables = {
-    search: 'Fate/Zeros',
-    page: 1,
-    perPage: 3
+    search: title,
   };
 
   axios({
@@ -40,9 +44,14 @@ query ($id: Int, $page: Int, $perPage: Int, $search: String) {
     data: JSON.stringify({ query, variables }),
     headers: {
       'Content-Type': 'application/json',
-      Accept: 'application/json'
-    }
-  }).then(res => console.log(res.data.data));
+      Accept: 'application/json',
+    },
+  }).then((res) => {
+    console.log(res.data.data.Media);
+    modifyState(res.data.data.Media);
+  });
 }
 
-export default test;
+export default {
+  getInfo,
+};

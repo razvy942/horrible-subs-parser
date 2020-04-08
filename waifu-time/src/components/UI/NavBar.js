@@ -47,6 +47,9 @@ const NavBar = (props) => {
           <Link to="/player">Player link</Link>
         </li>
         <li>
+          <Link to="/manage-downloads">Manage Downloads</Link>
+        </li>
+        <li>
           <button onClick={handleShow}>Login</button>
           {modal}
         </li>

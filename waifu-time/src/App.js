@@ -6,6 +6,7 @@ import ShowsList from './components/ShowsList';
 import NavBar from './components/UI/NavBar.js';
 import ShowInfo from './components/ShowInfo';
 import Renderer from './Renderer';
+import DownloadManager from './components/DownloadManager';
 import './App.css';
 
 function App() {
@@ -24,6 +25,9 @@ function App() {
         </Route>
         <Route path="/player">
           <Renderer />
+        </Route>
+        <Route path="/manage-downloads">
+          <DownloadManager />
         </Route>
       </div>
     </Router>

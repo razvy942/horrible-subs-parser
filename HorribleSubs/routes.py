@@ -48,6 +48,6 @@ def search_horriblesubs():
 
 @bp.route('/horriblesubs/get-episode/<title>/<episode_number>')
 def get_ep(title, episode_number):
-    shows = nyaa.get_magnet(title, '01')
+    shows = nyaa.get_magnet(title, episode_number)
     return jsonify(shows)
 

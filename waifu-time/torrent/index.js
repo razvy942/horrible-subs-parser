@@ -77,6 +77,7 @@ const getInfo = () => {
     // console.log(
     //   `${activeTorrents[i]}: \n\tspeed: ${activeTorrents[i].downloadSpeed}\n\tprogress: ${activeTorrents[i].progress}`
     // );
+    subInfo = {};
     subInfo.name = activeTorrents[i].name;
     subInfo.path = activeTorrents[i].path;
     subInfo.downloadSpeed = activeTorrents[i].downloadSpeed;
