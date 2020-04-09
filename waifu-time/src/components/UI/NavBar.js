@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 import Modal from './Modal';
 import Slider from './Slider';
 import Button from './Button';
+import Player from '../../Renderer';
 import classes from './NavBar.module.css';
 
 const NavBar = (props) => {
@@ -50,6 +51,7 @@ const NavBar = (props) => {
         <div>INSERT LOGIN FORM HERE</div>
 
         <button onClick={handleHide}>Hide modal</button>
+        <Player />
       </div>
     </Modal>
   ) : null;
