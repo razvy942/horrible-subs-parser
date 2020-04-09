@@ -45,9 +45,9 @@ client.on('error', (err) => {
   if (err) console.log(`Error downloading torrent: ${err}`);
 });
 
-const removeTorrent = () => {
-  const lastTorrent = torrentQueue.pop();
-  client.remove(lastTorrent, (err) => {
+const removeTorrent = (id) => {
+  // const lastTorrent = torrentQueue.pop();
+  client.remove(id, (err) => {
     if (err) {
       console.log(`Error removing torrent: ${err}`);
     }
@@ -82,6 +82,7 @@ const getInfo = () => {
     subInfo.path = activeTorrents[i].path;
     subInfo.downloadSpeed = activeTorrents[i].downloadSpeed;
     subInfo.progress = activeTorrents[i].progress;
+    subInfo.id = activeTorrents[i].magnetURI;
 
     info[activeTorrents[i].name] = subInfo;
   }

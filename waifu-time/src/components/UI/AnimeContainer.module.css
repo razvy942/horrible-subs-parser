@@ -1,21 +1,22 @@
 .box {
   width: 170px;
-
   height: auto;
   padding: 5px;
   margin: 5px;
+  background-color: var(--box-color);
   border-radius: 2%;
-  box-shadow: 0 0 15px #cdcdcd;
+  box-shadow: 0 0 15px var(--shadow-color);
   transition: 0.1s;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  color: black;
+  color: var(--font-color);
 }
 
 .box:hover {
   cursor: pointer;
-  box-shadow: 0 0 15px #8e8e8e;
+  box-shadow: 0 0 15px var(--shadow-color);
+  transform: scale(1.05);
 }
 
 img {

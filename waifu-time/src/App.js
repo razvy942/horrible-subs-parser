@@ -9,6 +9,7 @@ import Renderer from './Renderer';
 import DownloadManager from './components/DownloadManager';
 import './App.css';
 
+// TODO: BUG when a file is already downloaded it doesn't redirect correctly
 function App() {
   return (
     <Router>
@@ -20,12 +21,11 @@ function App() {
         <Route path="/all-shows">
           <ShowsList />
         </Route>
+        <Route path="/player" component={Renderer} />
         <Route path="/show/:title">
           <ShowInfo />
         </Route>
-        <Route path="/player">
-          <Renderer />
-        </Route>
+
         <Route path="/manage-downloads">
           <DownloadManager />
         </Route>

@@ -1,0 +1,29 @@
+.container {
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.container:hover {
+  cursor: pointer;
+}
+
+.image {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  object-position: center;
+  transition: 0.1s;
+  filter: brightness(70%);
+}
+
+.image:hover {
+  filter: brightness(100%);
+}
+
+.episodeNumber {
+  margin: 0;
+}

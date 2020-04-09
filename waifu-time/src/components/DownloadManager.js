@@ -12,7 +12,7 @@ const DownloadManager = () => {
     // Request torrent info every second to update on front-end
     let interval = setInterval(() => {
       ipcRenderer.send('get-torrent-info', 'give me info');
-    }, 1000);
+    }, 300);
     // remove interval when component gets unmounted
     return () => clearInterval(interval);
   }, []);

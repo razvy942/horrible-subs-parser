@@ -4,13 +4,15 @@
   left: 0;
   width: 100vw;
   background-color: black;
-  box-shadow: 0 0 10px black;
+  box-shadow: 0 0 10px var(--shadow-color);
   color: white;
+  z-index: 100;
 }
 
 ul {
   display: flex;
   justify-content: flex-start;
+  align-items: center;
   list-style: none;
 }
 

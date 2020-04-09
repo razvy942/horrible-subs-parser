@@ -3,41 +3,65 @@ import React from 'react';
 import { ReactMPV } from 'mpv.js';
 import { remote } from 'electron';
 import classes from './Renderer.module.css';
-// import ReactMPV from './helpers/NewMPV'asd;
 import { withRouter } from 'react-router-dom';
+import fs from 'fs';
 
-class Renderer extends React.PureComponent {
+class Renderer extends React.Component {
+  state = {
+    pause: true,
+    'time-pos': 0,
+    duration: 0,
+    fullscreen: false,
+    isFileCreated: false,
+  };
+
   mpv = null;
-  state = { pause: true, 'time-pos': 0, duration: 0, fullscreen: false };
-  handleKeyDown = this.handleKeyDown.bind(this);
-  handleMPVReady = this.handleMPVReady.bind(this);
-  handlePropertyChange = this.handlePropertyChange.bind(this);
-  toggleFullscreen = this.toggleFullscreen.bind(this);
-  togglePause = this.togglePause.bind(this);
-  handleStop = this.handleStop.bind(this);
-  handleSeek = this.handleSeek.bind(this);
-  handleSeekMouseDown = this.handleSeekMouseDown.bind(this);
-  handleSeekMouseUp = this.handleSeekMouseUp.bind(this);
-  handleLoad = this.handleLoad.bind(this);
+  fileCheckerInterval;
+
+  checkForFile = () => {
+    console.log('checking for file');
+    if (!this.props.location.state) {
+      console.log('no file specified');
+      clearInterval(this.fileCheckerInterval);
+      return;
+    }
+    console.log(path.join(__dirname, this.props.location.state.path));
+    fs.access(this.props.location.state.path, (err) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      clearInterval(this.fileCheckerInterval);
+      this.setState({
+        isFileCreated: true,
+      });
+    });
+  };
 
   componentDidMount() {
     document.addEventListener('keydown', this.handleKeyDown, false);
     console.log(path.join(__dirname, '.'));
+    console.log(this.props);
+
+    this.fileCheckerInterval = setInterval(() => {
+      this.checkForFile();
+    }, 1000);
   }
   componentWillUnmount() {
     document.removeEventListener('keydown', this.handleKeyDown, false);
+    clearInterval(this.fileCheckerInterval);
   }
 
-  handleKeyDown(e) {
+  handleKeyDown = (e) => {
     e.preventDefault();
     if (e.key === 'f' || (e.key === 'Escape' && this.state.fullscreen)) {
       this.toggleFullscreen();
     } else if (this.state.duration) {
       this.mpv.keypress(e);
     }
-  }
+  };
 
-  handleMPVReady(mpv) {
+  handleMPVReady = (mpv) => {
     this.mpv = mpv;
     const observe = mpv.observe.bind(mpv);
     ['pause', 'time-pos', 'duration', 'eof-reached'].forEach(observe);
@@ -48,9 +72,13 @@ class Renderer extends React.PureComponent {
       vidPath = this.props.location.state.path;
     }
     this.mpv.command('loadfile', vidPath);
-  }
 
-  handlePropertyChange(name, value) {
+    setTimeout(() => {
+      this.mpv.property('pause', false);
+    }, 500);
+  };
+
+  handlePropertyChange = (name, value) => {
     if (name === 'time-pos' && this.seeking) {
       return;
     } else if (name === 'eof-reached' && value) {
@@ -58,41 +86,41 @@ class Renderer extends React.PureComponent {
     } else {
       this.setState({ [name]: value });
     }
-  }
+  };
 
-  toggleFullscreen() {
+  toggleFullscreen = () => {
     if (this.state.fullscreen) {
       document.webkitExitFullscreen();
     } else {
       this.mpv.fullscreen();
     }
     this.setState({ fullscreen: !this.state.fullscreen });
-  }
+  };
 
-  togglePause(e) {
+  togglePause = (e) => {
     e.target.blur();
     if (!this.state.duration) return;
     this.mpv.property('pause', !this.state.pause);
-  }
-  handleStop(e) {
+  };
+  handleStop = (e) => {
     e.target.blur();
     this.mpv.property('pause', true);
     this.mpv.command('stop');
     this.setState({ 'time-pos': 0, duration: 0 });
-  }
-  handleSeekMouseDown() {
+  };
+  handleSeekMouseDown = () => {
     this.seeking = true;
-  }
-  handleSeek(e) {
+  };
+  handleSeek = (e) => {
     e.target.blur();
     const timePos = +e.target.value;
     this.setState({ 'time-pos': timePos });
     this.mpv.property('time-pos', timePos);
-  }
-  handleSeekMouseUp() {
+  };
+  handleSeekMouseUp = () => {
     this.seeking = false;
-  }
-  handleLoad(e) {
+  };
+  handleLoad = (e) => {
     e.target.blur();
     remote.dialog
       .showOpenDialog({
@@ -104,39 +132,45 @@ class Renderer extends React.PureComponent {
       .then((res) => {
         if (res.filePaths[0]) this.mpv.command('loadfile', res.filePaths[0]);
       });
-  }
+  };
 
   render() {
     return (
       <div className={classes.container}>
-        <ReactMPV
-          className={classes.player}
-          onReady={this.handleMPVReady}
-          onPropertyChange={this.handlePropertyChange}
-          onMouseDown={this.togglePause}
-        />
-        <div className={classes.controls}>
-          <button className={classes.control} onClick={this.togglePause}>
-            {this.state.pause ? '▶' : '❚❚'}
-          </button>
-          <button className={classes.control} onClick={this.handleStop}>
-            ■
-          </button>
-          <input
-            className={classes.seek}
-            type="range"
-            min={0}
-            step={0.1}
-            max={this.state.duration}
-            value={this.state['time-pos']}
-            onChange={this.handleSeek}
-            onMouseDown={this.handleSeekMouseDown}
-            onMouseUp={this.handleSeekMouseUp}
-          />
-          <button className={classes.control} onClick={this.handleLoad}>
-            ⏏
-          </button>
-        </div>
+        {this.state.isFileCreated ? (
+          <>
+            <ReactMPV
+              className={classes.player}
+              onReady={this.handleMPVReady}
+              onPropertyChange={this.handlePropertyChange}
+              onMouseDown={this.togglePause}
+            />
+            <div className={classes.controls}>
+              <button className={classes.control} onClick={this.togglePause}>
+                {this.state.pause ? '▶' : '❚❚'}
+              </button>
+              <button className={classes.control} onClick={this.handleStop}>
+                ■
+              </button>
+              <input
+                className={classes.seek}
+                type="range"
+                min={0}
+                step={0.1}
+                max={this.state.duration}
+                value={this.state['time-pos']}
+                onChange={this.handleSeek}
+                onMouseDown={this.handleSeekMouseDown}
+                onMouseUp={this.handleSeekMouseUp}
+              />
+              <button className={classes.control} onClick={this.handleLoad}>
+                ⏏
+              </button>
+            </div>
+          </>
+        ) : (
+          <div>loading file</div>
+        )}
       </div>
     );
   }

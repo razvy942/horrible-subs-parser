@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import Modal from './Modal';
+import Slider from './Slider';
 import classes from './NavBar.module.css';
 
 const NavBar = (props) => {
   const [showModal, setShowModal] = useState(false);
+  const [darkTheme, setDarkTheme] = useState(false);
 
   const handleShow = () => {
     setShowModal(true);
@@ -18,6 +20,16 @@ const NavBar = (props) => {
   const handleKeyPress = (e) => {
     if (e.key === 'Escape') {
       setShowModal(false);
+    }
+  };
+
+  const switchThemes = () => {
+    if (!darkTheme) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      setDarkTheme(true);
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+      setDarkTheme(false);
     }
   };
 
@@ -52,6 +64,11 @@ const NavBar = (props) => {
         <li>
           <button onClick={handleShow}>Login</button>
           {modal}
+        </li>
+
+        <li style={{ display: 'flex', alignItems: 'center' }}>
+          <Slider switchThemes={switchThemes} isActive={darkTheme} />
+          <span style={{ marginLeft: '10px' }}>Enable dark mode</span>
         </li>
       </ul>
     </div>
