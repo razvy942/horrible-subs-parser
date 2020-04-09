@@ -28,7 +28,7 @@ body {
 [data-theme='dark'] {
   --primary-color: #fc4d55;
   --secondary-color: #818cab;
-  --font-color: white;
+  --font-color: #d6d6d6;
   --bg-color: #282d33;
   --heading-color: #818cab;
   --shadow-color: black;

@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 
 import Modal from './Modal';
 import Slider from './Slider';
+import Button from './Button';
 import classes from './NavBar.module.css';
 
 const NavBar = (props) => {
@@ -55,37 +56,46 @@ const NavBar = (props) => {
 
   return (
     <div className={classes.navBar} onKeyDown={(e) => handleKeyPress(e)}>
-      <ul>
-        <li>
-          <NavLink exact activeClassName={classes.active} to="/">
-            Home
-          </NavLink>
-        </li>
-        <li>
-          <NavLink activeClassName={classes.active} to="/all-shows">
-            See All shows
-          </NavLink>
-        </li>
-        <li>
-          <NavLink activeClassName={classes.active} to="/player">
-            Player Navlink
-          </NavLink>
-        </li>
-        <li>
-          <NavLink activeClassName={classes.active} to="/manage-downloads">
-            Manage Downloads
-          </NavLink>
-        </li>
-        <li>
-          <button onClick={handleShow}>Login</button>
-          {modal}
-        </li>
-
-        <li style={{ display: 'flex', alignItems: 'center' }}>
+      <div className={classes.links}>
+        <ul>
+          <li>
+            <NavLink exact activeClassName={classes.active} to="/">
+              Home
+            </NavLink>
+          </li>
+          <li>
+            <NavLink activeClassName={classes.active} to="/all-shows">
+              See All shows
+            </NavLink>
+          </li>
+          <li>
+            <NavLink activeClassName={classes.active} to="/player">
+              Player Navlink
+            </NavLink>
+          </li>
+          <li>
+            <NavLink activeClassName={classes.active} to="/manage-downloads">
+              Manage Downloads
+            </NavLink>
+          </li>
+        </ul>
+      </div>
+      <div className={classes.searchBox}>
+        <input
+          className={classes.searchInput}
+          placeholder="Search for something to watch"
+        ></input>
+      </div>
+      <div className={classes.profile}>
+        <Button clickAction={handleShow} text={'Login'} />
+        <span
+          style={{ display: 'flex', alignItems: 'center', marginLeft: '10px' }}
+        >
           <Slider switchThemes={switchThemes} isActive={darkTheme} />
-          <span style={{ marginLeft: '10px' }}>Enable dark mode</span>
-        </li>
-      </ul>
+
+          {modal}
+        </span>
+      </div>
     </div>
   );
 };

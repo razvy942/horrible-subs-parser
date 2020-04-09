@@ -2,10 +2,13 @@ import path from 'path';
 import React from 'react';
 //import { ReactMPV } from 'mpv.js';
 import { ReactMPV } from './helpers/NewMpv';
+import MPV from './helpers/MPV';
 import { remote } from 'electron';
 import classes from './Renderer.module.css';
 import { withRouter } from 'react-router-dom';
 import fs from 'fs';
+
+import Spinner from './components/UI/Spinners/Spinner';
 
 class Renderer extends React.Component {
   state = {
@@ -175,7 +178,7 @@ class Renderer extends React.Component {
             </div>
           </>
         ) : (
-          <div>loading file</div>
+          <Spinner />
         )}
       </div>
     );

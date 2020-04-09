@@ -3,6 +3,7 @@ import axios from 'axios';
 
 import AnimeContainer from './UI/AnimeContainer';
 import Button from './UI/Button';
+import Spinner from './UI/Spinners/Spinner';
 import classes from './MainPage.module.css';
 
 const AllShows = () => {
@@ -48,7 +49,7 @@ const AllShows = () => {
             );
           })
         ) : (
-          <p>loading...</p>
+          <Spinner />
         )}
       </div>
       <div className={classes.pagination}>

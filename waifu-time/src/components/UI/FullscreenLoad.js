@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
 import Modal from './Modal';
+import Spinner from './Spinners/ModalSpinner';
+import Button from './Button';
 import classes from './NavBar.module.css';
 
 const FullscreenLoad = ({ handleHide }) => {
@@ -11,12 +13,26 @@ const FullscreenLoad = ({ handleHide }) => {
     <div>
       <Modal>
         <div className={classes.modal}>
-          <button onClick={handleHide} className={classes.closeButton}>
-            X
-          </button>
-          <div>LOADING PLEASE WAIT</div>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              textAlign: 'center',
+            }}
+          >
+            <Spinner />
+            <div
+              style={{
+                marginBottom: '100px',
+              }}
+            >
+              <p style={{ fontSize: '1.1rem' }}>
+                Fetching torrent, please wait...
+              </p>
 
-          <button onClick={handleHide}>Hide modal</button>
+              <Button text={'Cancel'} clickAction={handleHide} />
+            </div>
+          </div>
         </div>
       </Modal>
     </div>
