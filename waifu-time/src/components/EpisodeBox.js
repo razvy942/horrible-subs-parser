@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
 import { ipcRenderer } from 'electron';
 import axios from 'axios';
+import pic from './UI/images/not-found-banner.png';
 
 import FullscreenLoad from './UI/FullscreenLoad';
 import classes from './EpisodeBox.module.css';
@@ -13,6 +14,7 @@ const EpisodeBox = ({ background, epNumber, match }) => {
   const history = useHistory();
 
   useEffect(() => {
+    console.log(background);
     ipcRenderer.on('add-torrent-reply', (event, arg) => {
       ipcRenderer.send('get-torrent-info', 'give me info');
     });
@@ -77,7 +79,11 @@ const EpisodeBox = ({ background, epNumber, match }) => {
       {isLoading ? (
         <FullscreenLoad handleHide={() => setIsLoading(false)} />
       ) : null}
-      <img className={classes.image} src={background} alt="Banner for show" />
+      <img
+        className={classes.image}
+        src={background ? background : pic}
+        alt="Banner for show"
+      />
       <p className={classes.episodeNumber}>Episode {epNumber}</p>
     </div>
   );

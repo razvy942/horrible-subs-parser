@@ -25,7 +25,7 @@
     "test": "rescripts test",
     "eject": "react-scripts eject",
     "el": "electron ./public",
-    "client-dev": "concurrently \"npm start\" \"wait-on http://localhost:3000 && electron ./public\" "
+    "dev": "concurrently \"npm start\" \"wait-on http://localhost:3000 && electron ./public\" "
   },
   "eslintConfig": {
     "extends": "react-app"

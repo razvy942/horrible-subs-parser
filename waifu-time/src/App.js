@@ -18,15 +18,15 @@ function App() {
         <Route exact path="/">
           <HomePage />
         </Route>
-        <Route path="/all-shows">
+        <Route exact path="/all-shows">
           <ShowsList />
         </Route>
-        <Route path="/player" component={Renderer} />
-        <Route path="/show/:title">
+        <Route exact path="/player" component={Renderer} />
+        <Route exact path="/show/:title">
           <ShowInfo />
         </Route>
 
-        <Route path="/manage-downloads">
+        <Route exact path="/manage-downloads">
           <DownloadManager />
         </Route>
       </div>

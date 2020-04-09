@@ -3,8 +3,9 @@
   top: 0;
   left: 0;
   width: 100vw;
-  background-color: black;
-  box-shadow: 0 0 10px var(--shadow-color);
+  height: auto;
+  background-color: var(--side-bar-color);
+
   color: white;
   z-index: 100;
 }
@@ -14,6 +15,7 @@ ul {
   justify-content: flex-start;
   align-items: center;
   list-style: none;
+  height: 100%;
 }
 
 ul li {
@@ -26,7 +28,11 @@ a {
 }
 
 a:hover {
-  color: #8e8e8e;
+  color: var(--primary-color);
+}
+
+.active {
+  color: var(--primary-color);
 }
 
 .modal {

@@ -112,7 +112,6 @@ const ShowInfo = (props) => {
       )}
       {magnetURI ? (
         <div>
-          here is ur episode
           {magnetURI.map((show, index) => {
             return Object.keys(show).map((key, index2) => {
               return (

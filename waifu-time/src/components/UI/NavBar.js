@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import Modal from './Modal';
 import Slider from './Slider';
@@ -7,7 +7,14 @@ import classes from './NavBar.module.css';
 
 const NavBar = (props) => {
   const [showModal, setShowModal] = useState(false);
-  const [darkTheme, setDarkTheme] = useState(false);
+  const [darkTheme, setDarkTheme] = useState(true);
+
+  useEffect(() => {
+    if (darkTheme) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      setDarkTheme(true);
+    }
+  });
 
   const handleShow = () => {
     setShowModal(true);
@@ -50,16 +57,24 @@ const NavBar = (props) => {
     <div className={classes.navBar} onKeyDown={(e) => handleKeyPress(e)}>
       <ul>
         <li>
-          <Link to="/">Home</Link>
+          <NavLink exact activeClassName={classes.active} to="/">
+            Home
+          </NavLink>
         </li>
         <li>
-          <Link to="/all-shows">See All shows</Link>
+          <NavLink activeClassName={classes.active} to="/all-shows">
+            See All shows
+          </NavLink>
         </li>
         <li>
-          <Link to="/player">Player link</Link>
+          <NavLink activeClassName={classes.active} to="/player">
+            Player Navlink
+          </NavLink>
         </li>
         <li>
-          <Link to="/manage-downloads">Manage Downloads</Link>
+          <NavLink activeClassName={classes.active} to="/manage-downloads">
+            Manage Downloads
+          </NavLink>
         </li>
         <li>
           <button onClick={handleShow}>Login</button>

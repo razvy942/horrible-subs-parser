@@ -1,6 +1,7 @@
 import path from 'path';
 import React from 'react';
-import { ReactMPV } from 'mpv.js';
+//import { ReactMPV } from 'mpv.js';
+import { ReactMPV } from './helpers/NewMpv';
 import { remote } from 'electron';
 import classes from './Renderer.module.css';
 import { withRouter } from 'react-router-dom';
@@ -23,9 +24,12 @@ class Renderer extends React.Component {
     if (!this.props.location.state) {
       console.log('no file specified');
       clearInterval(this.fileCheckerInterval);
+      this.setState({
+        isFileCreated: true,
+      });
       return;
     }
-    console.log(path.join(__dirname, this.props.location.state.path));
+    console.log(this.props.location.state.path);
     fs.access(this.props.location.state.path, (err) => {
       if (err) {
         console.log(err);
@@ -145,27 +149,29 @@ class Renderer extends React.Component {
               onPropertyChange={this.handlePropertyChange}
               onMouseDown={this.togglePause}
             />
-            <div className={classes.controls}>
-              <button className={classes.control} onClick={this.togglePause}>
-                {this.state.pause ? '▶' : '❚❚'}
-              </button>
-              <button className={classes.control} onClick={this.handleStop}>
-                ■
-              </button>
-              <input
-                className={classes.seek}
-                type="range"
-                min={0}
-                step={0.1}
-                max={this.state.duration}
-                value={this.state['time-pos']}
-                onChange={this.handleSeek}
-                onMouseDown={this.handleSeekMouseDown}
-                onMouseUp={this.handleSeekMouseUp}
-              />
-              <button className={classes.control} onClick={this.handleLoad}>
-                ⏏
-              </button>
+            <div className={classes.controlsContainer}>
+              <div className={classes.controls}>
+                <button className={classes.control} onClick={this.togglePause}>
+                  {this.state.pause ? '▶' : '❚❚'}
+                </button>
+                <button className={classes.control} onClick={this.handleStop}>
+                  ■
+                </button>
+                <input
+                  className={classes.seek}
+                  type="range"
+                  min={0}
+                  step={0.1}
+                  max={this.state.duration}
+                  value={this.state['time-pos']}
+                  onChange={this.handleSeek}
+                  onMouseDown={this.handleSeekMouseDown}
+                  onMouseUp={this.handleSeekMouseUp}
+                />
+                <button className={classes.control} onClick={this.handleLoad}>
+                  ⏏
+                </button>
+              </div>
             </div>
           </>
         ) : (

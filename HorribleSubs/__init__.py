@@ -20,8 +20,8 @@ def paginate_series_db(series_db):
     items = series_db.items()
     current_page = 1
     paginated_db = {}
-    for i in range(len(items)-1, 10, -10):
-        paginated_db[current_page] = dict( list(items)[i-10 : i] )
+    for i in range(len(items)-1, 15, -15):
+        paginated_db[current_page] = dict( list(items)[i-15 : i] )
         current_page += 1
 
     return paginated_db

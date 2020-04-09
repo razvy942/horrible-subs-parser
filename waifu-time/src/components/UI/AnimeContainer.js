@@ -9,15 +9,19 @@ const AnimeContainer = ({ seriesTitle, seriesImage, seriesDesc }) => {
   return (
     <Link to={`/show/${seriesTitle}`}>
       <div className={classes.box}>
-        <p>{seriesTitle}</p>
         {/* <p>{seriesDesc}</p> */}
-        <img src={img} alt={`Cover art for ${seriesTitle}`} />
+        <img
+          className={classes.image}
+          src={img}
+          alt={`Cover art for ${seriesTitle}`}
+        />
+        <p className={classes.seriesName}>{seriesTitle}</p>
       </div>
     </Link>
   );
 };
 
-const formatImage = imgUrl => {
+const formatImage = (imgUrl) => {
   let url = 'https://horriblesubs.info';
   if (!imgUrl.startsWith(url)) return url + imgUrl;
   return imgUrl;
