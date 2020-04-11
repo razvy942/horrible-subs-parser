@@ -17,6 +17,7 @@ class Renderer extends React.Component {
     duration: 0,
     fullscreen: false,
     isFileCreated: false,
+    showControls: false,
   };
 
   mpv = null;
@@ -98,10 +99,19 @@ class Renderer extends React.Component {
   toggleFullscreen = () => {
     if (this.state.fullscreen) {
       document.webkitExitFullscreen();
+      this.setState({
+        fullscreen: false,
+      });
     } else {
-      this.mpv.fullscreen();
+      this.nodeRef.current.webkitRequestFullscreen();
+      this.setState({
+        fullscreen: true,
+      });
     }
-    this.setState({ fullscreen: !this.state.fullscreen });
+  };
+
+  handleFullScreenToggle = () => {
+    this.toggleFullscreen();
   };
 
   togglePause = (e) => {
@@ -141,9 +151,53 @@ class Renderer extends React.Component {
       });
   };
 
+  controlsVisibilityTimer = null;
+  nodeRef = React.createRef();
+
+  handleMouseIn = () => {
+    if (this.controlsVisibilityTimer)
+      clearTimeout(this.controlsVisibilityTimer);
+
+    this.setState({
+      showControls: true,
+    });
+
+    this.controlsVisibilityTimer = setTimeout(() => {
+      this.setState({
+        showControls: false,
+      });
+    }, 1500);
+  };
+
+  handleMouseOut = () => {
+    this.setState({
+      showControls: false,
+    });
+  };
+
+  // handleFullScreen = () => {
+  //   if (this.state.fullscreen) {
+  //     document.webkitExitFullscreen();
+  //     this.setState({
+  //       fullscreen: false,
+  //     });
+  //   } else {
+  //     this.nodeRef.current.webkitRequestFullscreen();
+  //     this.setState({
+  //       fullscreen: true,
+  //     });
+  //   }
+  // };
+
   render() {
     return (
-      <div className={classes.container}>
+      <div
+        ref={this.nodeRef}
+        onKeyDown={this.handleKeyDown}
+        onMouseMove={this.handleMouseIn}
+        onMouseLeave={this.handleMouseOut}
+        className={classes.container}
+      >
         {this.state.isFileCreated ? (
           <>
             <ReactMPV
@@ -152,7 +206,16 @@ class Renderer extends React.Component {
               onPropertyChange={this.handlePropertyChange}
               onMouseDown={this.togglePause}
             />
-            <div className={classes.controlsContainer}>
+            <div
+              className={
+                this.state.showControls
+                  ? classes.controlsContainer
+                  : [
+                      classes.controlsContainer,
+                      classes.controlsContainerHidden,
+                    ].join(' ')
+              }
+            >
               <div className={classes.controls}>
                 <button className={classes.control} onClick={this.togglePause}>
                   {this.state.pause ? '▶' : '❚❚'}
@@ -173,6 +236,12 @@ class Renderer extends React.Component {
                 />
                 <button className={classes.control} onClick={this.handleLoad}>
                   ⏏
+                </button>
+                <button
+                  className={classes.control}
+                  onClick={this.handleFullScreenToggle}
+                >
+                  full
                 </button>
               </div>
             </div>

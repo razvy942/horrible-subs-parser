@@ -148,9 +148,9 @@ class ReactMPV extends React.PureComponent {
   /**
    * Enter fullscreen.
    */
-  fullscreen() {
-    this.node().webkitRequestFullscreen();
-  }
+  // fullscreen() {
+  //   this.node().webkitRequestFullscreen();
+  // }
 
   /**
    * Synchronously destroy mpv instance. You might want to call this on
