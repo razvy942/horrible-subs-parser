@@ -4,6 +4,7 @@ from flask_cors import CORS, cross_origin
 import json
 from HorribleSubs import horribleParser
 from NyaaPantsu import nyaaApi
+from ApiBindings import jikan as jikanApi
 
 
 # app = Flask(__name__)
@@ -29,6 +30,7 @@ pg_db = paginate_series_db(series_db)
 
 parser = horribleParser.HorribleSubsParser()
 nyaa = nyaaApi.NyaaPantsu()
+jikan = jikanApi.Jikan()
 
 from HorribleSubs import routes
 

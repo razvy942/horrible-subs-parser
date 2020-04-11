@@ -14,7 +14,7 @@
 
 .links {
   color: var(--font-color);
-  width: 35%;
+  width: 50%;
   display: flex;
   justify-content: flex-start;
 }

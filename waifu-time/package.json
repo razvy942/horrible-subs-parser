@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@brainhubeu/react-carousel": "^1.13.26",
     "@rescripts/cli": "0.0.14",
     "@rescripts/rescript-env": "0.0.12",
     "@testing-library/jest-dom": "^4.2.4",

@@ -1,13 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
+import Carousel, { Dots } from '@brainhubeu/react-carousel';
+import '@brainhubeu/react-carousel/lib/style.css';
 import axios from 'axios';
 
 import Download from '../helpers/Download';
 import EpisodeBox from './EpisodeBox';
+import Hr from './UI/HorizontalLine';
+import Button from './UI/Button';
 import anilist from '../helpers/aniListApiWrapper';
 import classes from './ShowInfo.module.css';
 
 const ShowInfo = (props) => {
+  /* 
+    image_url,
+    mal_id,
+    episodes: amount of episodes,
+    score,
+    scores: {1: {percentage: int, votes: int}, ...},
+    synopsis, 
+    title,
+    trailer_url,
+    airing: bool,
+    aired: {string: str with air date info},
+    genres: [{name}, ...],
+    characters: [{image_url, name, voice_actors: [{ name }]}, ...]
+  */
   const [showInfo, setShowInfo] = useState(null);
   const [error, setError] = useState(false);
   const [apiShowInfo, setApiShowInfo] = useState(null);
@@ -20,11 +38,12 @@ const ShowInfo = (props) => {
 
   useEffect(() => {
     const title = props.match.params.title;
-    getEpisodesInfo(title, setApiShowInfo);
+    // getEpisodesInfo(title, setApiShowInfo);
     axios
       .get(`http://127.0.0.1:5000/horriblesubs/get-show/${title}`)
       .then((res) => {
         setShowInfo(res.data);
+        console.log(res.data);
       })
       .catch((err) => {
         console.log(`Error fetching ${title}'s details: ${err}`);
@@ -63,42 +82,77 @@ const ShowInfo = (props) => {
       <div className={classes.container}>
         {showInfo ? (
           <div>
-            {Object.keys(showInfo).map((show, index) => {
-              return (
-                <div className={classes.infoContainer} key={index}>
-                  <div className={classes.leftView}>
+            <div className={classes.infoContainer}>
+              <div className={classes.leftView}>
+                <img
+                  className={classes.showInfoImg}
+                  src={showInfo['image_url']}
+                  alt={`Cover art for ${showInfo.title}`}
+                ></img>
+                <button
+                  className={classes.episodesButton}
+                  onClick={() => console.log(' go to episodes')}
+                >{`View Episodes (${showInfo.episodes})`}</button>
+              </div>
+              <div className={classes.rightView}>
+                <h1 className={classes.title}>{showInfo.title}</h1>
+                <div className={classes.description}>{showInfo.synopsis}</div>
+              </div>
+            </div>
+            <Hr />
+            <div className={classes.ratingsDisplay}>
+              <h1 style={{ textAlign: 'start' }}>Ratings</h1>
+              <p style={{ textAlign: 'start' }}>{showInfo.score}</p>
+              <div className={classes.scoreDistribution}>
+                {Object.keys(showInfo.scores).map((score, index) => (
+                  <span key={index}>
+                    {score}: {showInfo.scores[score]['votes']}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <Hr />
+            <div className={classes.charactersDisplay}>
+              <h1 style={{ textAlign: 'start', marginBottom: '10px' }}>
+                Characters
+              </h1>
+              {/* <div className={classes.charactersDisplay}> */}
+              <Carousel
+                slidesPerPage={10}
+                animationSpeed={500}
+                keepDirectionWhenDragging
+              >
+                {showInfo.characters.map((character, index) => (
+                  <div key={index} className={classes.characterDisplay}>
                     <img
-                      className={classes.showInfoImg}
-                      src={
-                        showInfo[show].img.startsWith(
-                          'https://horriblesubs.info'
-                        )
-                          ? showInfo[show].img
-                          : 'https://horriblesubs.info' + showInfo[show].img
-                      }
-                      alt={`Cover art for ${show}`}
-                    ></img>
-                  </div>
-                  <div className={classes.rightView}>
-                    <span className={classes.title}>{show}</span>
-                    <br />
-                    <div className={classes.description}>
-                      {showInfo[show].desc.split('Description')[1]}
+                      className={classes.characterPortrait}
+                      src={character['image_url']}
+                    />
+                    <div>
+                      <span>{character.name}</span>
+                      <span>
+                        {character['voice_actors'].map(
+                          (i, index) =>
+                            i.language === 'Japanese' && (
+                              <span key={index}>{i.name}</span>
+                            )
+                        )}
+                      </span>
                     </div>
                   </div>
-                </div>
-              );
-            })}
+                ))}
+              </Carousel>
+              {/* </div> */}
+            </div>
           </div>
         ) : error ? (
           'There was an error, try again'
         ) : (
           'Loading'
         )}
-        <hr />
       </div>
-      <h1>Episodes: {apiShowInfo && <span>{apiShowInfo.episodes}</span>}</h1>
-      {apiShowInfo && (
+
+      {/* {apiShowInfo && (
         <div className={classes.episodesContainer}>
           {[...Array(apiShowInfo.episodes)].map((e, i) => (
             <div className={classes.episode}>
@@ -125,7 +179,7 @@ const ShowInfo = (props) => {
         </div>
       ) : (
         <div>fetching</div>
-      )}
+      )} */}
     </div>
   );
 };

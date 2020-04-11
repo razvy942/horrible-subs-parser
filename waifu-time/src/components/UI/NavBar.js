@@ -4,7 +4,6 @@ import { NavLink } from 'react-router-dom';
 import Modal from './Modal';
 import Slider from './Slider';
 import Button from './Button';
-import Player from '../../Renderer';
 import classes from './NavBar.module.css';
 
 const NavBar = (props) => {
@@ -51,7 +50,6 @@ const NavBar = (props) => {
         <div>INSERT LOGIN FORM HERE</div>
 
         <button onClick={handleHide}>Hide modal</button>
-        <Player />
       </div>
     </Modal>
   ) : null;
@@ -61,22 +59,22 @@ const NavBar = (props) => {
       <div className={classes.links}>
         <ul>
           <li>
-            <NavLink exact activeClassName={classes.active} to="/">
+            <NavLink exact activeClassName={classes.active} to='/'>
               Home
             </NavLink>
           </li>
           <li>
-            <NavLink activeClassName={classes.active} to="/all-shows">
+            <NavLink activeClassName={classes.active} to='/all-shows'>
               See All shows
             </NavLink>
           </li>
           <li>
-            <NavLink activeClassName={classes.active} to="/player">
+            <NavLink activeClassName={classes.active} to='/player'>
               Player Navlink
             </NavLink>
           </li>
           <li>
-            <NavLink activeClassName={classes.active} to="/manage-downloads">
+            <NavLink activeClassName={classes.active} to='/manage-downloads'>
               Manage Downloads
             </NavLink>
           </li>
@@ -85,7 +83,7 @@ const NavBar = (props) => {
       <div className={classes.searchBox}>
         <input
           className={classes.searchInput}
-          placeholder="Search for something to watch"
+          placeholder='Search for something to watch'
         ></input>
       </div>
       <div className={classes.profile}>

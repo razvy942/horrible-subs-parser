@@ -206,6 +206,7 @@ class Renderer extends React.Component {
               onPropertyChange={this.handlePropertyChange}
               onMouseDown={this.togglePause}
             />
+
             <div
               className={
                 this.state.showControls
@@ -216,7 +217,6 @@ class Renderer extends React.Component {
                     ].join(' ')
               }
             >
-              <div className={[classes.controls, classes.blur].join(' ')}></div>
               <div className={classes.controls}>
                 <button className={classes.control} onClick={this.togglePause}>
                   {this.state.pause ? '▶' : '❚❚'}
@@ -226,7 +226,7 @@ class Renderer extends React.Component {
                 </button>
                 <input
                   className={classes.seek}
-                  type="range"
+                  type='range'
                   min={0}
                   step={0.1}
                   max={this.state.duration}
