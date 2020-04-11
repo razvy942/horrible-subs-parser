@@ -216,6 +216,7 @@ class Renderer extends React.Component {
                     ].join(' ')
               }
             >
+              <div className={[classes.controls, classes.blur].join(' ')}></div>
               <div className={classes.controls}>
                 <button className={classes.control} onClick={this.togglePause}>
                   {this.state.pause ? '▶' : '❚❚'}

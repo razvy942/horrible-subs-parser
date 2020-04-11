@@ -20,13 +20,18 @@ body,
   width: 98vw;
   background: var(--side-bar-color);
   border-radius: 10px;
-  opacity: 0.9;
+  opacity: 0.7;
   transition: ease-in-out 0.4s;
+  backdrop-filter: blur(20px);
 }
 
 .controlsContainerHidden {
   bottom: 0px;
   opacity: 0;
+}
+
+.blur {
+  filter: blur(10px);
 }
 
 .player {
@@ -40,6 +45,7 @@ body,
   opacity: 1;
   transform: 0.3s;
   align-items: center;
+  filter: blur(10px);
   justify-content: space-evenly;
 }
 .control {
