@@ -8,6 +8,7 @@ import Hr from '../UI/HorizontalLine/HorizontalLine';
 import Synopsis from '../UI/Synopsis/Synopsis';
 import Stats from '../UI/StatsDisplay/Stats';
 import CharactersDisplay from '../UI/CharactersDisplay/Characters';
+import EpisodesListing from '../EpisodesListing/EpisodesListing';
 import Loading from '../UI/Loading/FullscreenLoad';
 import anilist from '../../helpers/aniListApiWrapper';
 import classes from './ShowInfo.module.css';
@@ -29,6 +30,7 @@ const ShowInfo = (props) => {
   */
   const [showInfo, setShowInfo] = useState(null);
   const [error, setError] = useState(false);
+  const [showEpisodes, setShowEpisodes] = useState(false);
   const [apiShowInfo, setApiShowInfo] = useState(null);
   const [magnetURI, setMagnetURI] = useState([]);
 
@@ -52,44 +54,26 @@ const ShowInfo = (props) => {
       });
   }, []);
 
-  // const getEpisodeMagnet = (epNumber) => {
-  //   const title = props.match.params.title;
-
-  //   axios
-  //     .get(
-  //       `http://127.0.0.1:5000/horriblesubs/get-episode/${title}/${epNumber}`
-  //     )
-  //     .then((res) => {
-  //       const uri = res.data;
-  //       let resolution = {};
-  //       uri.forEach((show) => {
-  //         Object.keys(show).forEach((key) => {
-  //           resolution['720p'] = show[key]['720p'];
-  //           resolution['1080p'] = show[key]['1080p'];
-  //         });
-  //       });
-
-  //       setMagnetURI(res.data);
-  //       console.log(resolution);
-  //     })
-  //     .catch((err) => {
-  //       console.log(`Error fetching ${title}'s details: ${err}`);
-  //       setError(true);
-  //     });
-  // };
-
   return (
     <div>
       <div className={classes.container}>
         {showInfo ? (
           <div>
-            <Synopsis showInfo={showInfo} />
+            <Synopsis
+              viewEpisodesAction={setShowEpisodes}
+              showInfo={showInfo}
+            />
+            {!showEpisodes ? (
+              <>
+                <Hr />
+                <Stats showInfo={showInfo} />
 
-            <Hr />
-            <Stats showInfo={showInfo} />
-
-            <Hr />
-            <CharactersDisplay showInfo={showInfo} />
+                <Hr />
+                <CharactersDisplay showInfo={showInfo} />
+              </>
+            ) : (
+              <EpisodesListing showInfo={showInfo} />
+            )}
           </div>
         ) : error ? (
           'There was an error, try again'

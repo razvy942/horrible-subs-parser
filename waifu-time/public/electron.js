@@ -2,23 +2,25 @@ const path = require('path');
 const { BrowserWindow, app, ipcMain } = require('electron');
 const { getPluginEntry } = require('mpv.js');
 
+const isDev = require('electron-is-dev');
+
 require('./eventChannels');
 
-let pdir = path.join(__dirname);
+const pluginDir = path.join(
+  path.dirname(require.resolve('mpv.js')),
+  'build',
+  'Release'
+);
+// See pitfalls section for details.
 if (process.platform !== 'linux') {
-  process.chdir(pdir);
-}
-
-if (process.platform === 'darwin') {
-  pdir = path.join(__dirname, 'mac-mpv-binary');
-  process.chdir(pdir);
-} else if (process.platform === 'win32') {
-  pdir = path.join(__dirname, 'windows-mpv-binary');
-  process.chdir(pdir);
+  process.chdir(pluginDir);
 }
 
 app.commandLine.appendSwitch('ignore-gpu-blacklist');
-app.commandLine.appendSwitch('register-pepper-plugins', getPluginEntry(pdir));
+app.commandLine.appendSwitch(
+  'register-pepper-plugins',
+  getPluginEntry(pluginDir)
+);
 
 // Needed because NaCL is deprecated in since electron 4.2.9
 app.commandLine.appendSwitch('no-sandbox');
@@ -31,9 +33,13 @@ app.on('ready', () => {
     webPreferences: { plugins: true, nodeIntegration: true },
   });
   // win.loadURL(`file://${__dirname}/index.html`);
-  win.loadURL('http://localhost:3000/');
+  win.loadURL(
+    isDev
+      ? 'http://localhost:3000/'
+      : `file://${path.join(__dirname, '../build/index.html')}`
+  );
 
-  win.webContents.openDevTools();
+  if (isDev) win.webContents.openDevTools();
 });
 
 app.on('window-all-closed', () => {

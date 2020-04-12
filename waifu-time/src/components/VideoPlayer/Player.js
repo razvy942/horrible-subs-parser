@@ -1,7 +1,7 @@
 import path from 'path';
 import React from 'react';
-//import { ReactMPV } from 'mpv.js';
-import { ReactMPV } from '../../helpers/NewMpv';
+// import { ReactMPV } from 'mpv.js';
+import ReactMPV from '../../helpers/MPV';
 
 import { remote } from 'electron';
 import classes from './Player.module.css';

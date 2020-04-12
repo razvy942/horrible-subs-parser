@@ -2,7 +2,7 @@ import React from 'react';
 
 import classes from './Synopsis.module.css';
 
-export default function Synopsis({ showInfo }) {
+export default function Synopsis({ showInfo, viewEpisodesAction }) {
   return (
     <div className={classes.infoContainer}>
       <div className={classes.leftView}>
@@ -13,7 +13,7 @@ export default function Synopsis({ showInfo }) {
         ></img>
         <button
           className={classes.episodesButton}
-          onClick={() => console.log(' go to episodes')}
+          onClick={() => viewEpisodesAction(true)}
         >{`View Episodes (${showInfo.episodes})`}</button>
       </div>
       <div className={classes.rightView}>

@@ -1,5 +1,5 @@
 const { ipcMain } = require('electron');
-const torrent = require('../torrent/index');
+const torrent = require('./torrent');
 
 ipcMain.on('add-torrent', (event, arg) => {
   console.log('hello i am adding new torrent: ' + arg);

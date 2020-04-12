@@ -10,6 +10,17 @@ class Jikan:
         info = self.__get_info(name)
         return info
 
+    def get_episodes(self, id):
+        uri = self.url + f'anime/{id}/episodes'
+        res = requests.get(uri)
+        res.raise_for_status()
+        # remember max 100 episodes per page, append /page-number at the end to get rest
+        res = res.json()
+        episodes_last_page = res['episodes_last_page']
+        episodes = res['episodes']
+        return episodes
+
+
     def get_staff_info(self, id):
         uri = self.url + f'anime/{id}/characters_staff'
         res = requests.get(uri)

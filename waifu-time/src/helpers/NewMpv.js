@@ -237,3 +237,4 @@ class ReactMPV extends React.PureComponent {
 // };
 
 module.exports = { PLUGIN_MIME_TYPE, getPluginEntry, ReactMPV };
+export default ReactMPV;

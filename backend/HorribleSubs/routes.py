@@ -45,6 +45,10 @@ def search_horriblesubs():
     show = {show_name: parser.shows_dict.get(show_name, 'not found')}
     return jsonify(show)
 
+@bp.route('/horriblesubs/get-episodes/<mal_id>')
+def get_episodes(mal_id):
+    episodes = jikan.get_episodes(mal_id)
+    return jsonify(episodes)
 
 @bp.route('/horriblesubs/get-episode/<title>/<episode_number>')
 def get_ep(title, episode_number):
