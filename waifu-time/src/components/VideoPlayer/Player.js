@@ -1,14 +1,14 @@
 import path from 'path';
 import React from 'react';
 //import { ReactMPV } from 'mpv.js';
-import { ReactMPV } from './helpers/NewMpv';
-import MPV from './helpers/MPV';
+import { ReactMPV } from '../../helpers/NewMpv';
+
 import { remote } from 'electron';
-import classes from './Renderer.module.css';
+import classes from './Player.module.css';
 import { withRouter } from 'react-router-dom';
 import fs from 'fs';
 
-import Spinner from './components/UI/Spinners/Spinner';
+import Spinner from '../UI/Spinners/Spinner';
 
 class Renderer extends React.Component {
   state = {
@@ -226,7 +226,7 @@ class Renderer extends React.Component {
                 </button>
                 <input
                   className={classes.seek}
-                  type='range'
+                  type="range"
                   min={0}
                   step={0.1}
                   max={this.state.duration}

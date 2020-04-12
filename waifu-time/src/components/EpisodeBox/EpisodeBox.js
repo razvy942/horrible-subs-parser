@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
 import { ipcRenderer } from 'electron';
 import axios from 'axios';
-import pic from './UI/images/not-found-banner.png';
+import pic from '../UI/images/not-found-banner.png';
 
-import FullscreenLoad from './UI/FullscreenLoad';
+import FullscreenLoad from '../UI/Loading/FullscreenLoad';
 import classes from './EpisodeBox.module.css';
 
 const EpisodeBox = ({ background, epNumber, match }) => {
@@ -77,7 +77,10 @@ const EpisodeBox = ({ background, epNumber, match }) => {
   return (
     <div onClick={clickHandler} className={classes.container}>
       {isLoading ? (
-        <FullscreenLoad handleHide={() => setIsLoading(false)} />
+        <FullscreenLoad
+          message="Fetching torrent link, please wait..."
+          handleHide={() => setIsLoading(false)}
+        />
       ) : null}
       <img
         className={classes.image}

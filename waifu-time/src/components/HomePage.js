@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { ipcRenderer } from 'electron';
 
-import AnimeContainer from './UI/AnimeContainer';
+import AnimeContainer from './UI/AnimeContainer/AnimeContainer';
 import Download from '../helpers/Download';
 import classes from './MainPage.module.css';
 

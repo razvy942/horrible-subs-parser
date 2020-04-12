@@ -3,9 +3,9 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 import HomePage from './components/HomePage';
 import ShowsList from './components/ShowsList';
-import NavBar from './components/UI/NavBar.js';
-import ShowInfo from './components/ShowInfo';
-import Renderer from './Renderer';
+import NavBar from './components/UI/Navbar/NavBar';
+import ShowInfo from './components/ShowInfo/ShowInfo';
+import VideoPlayer from './components/VideoPlayer/Player';
 import DownloadManager from './components/DownloadManager';
 import './App.css';
 
@@ -21,7 +21,7 @@ function App() {
         <Route exact path="/all-shows">
           <ShowsList />
         </Route>
-        <Route exact path="/player" component={Renderer} />
+        <Route exact path="/player" component={VideoPlayer} />
         <Route exact path="/show/:title">
           <ShowInfo />
         </Route>

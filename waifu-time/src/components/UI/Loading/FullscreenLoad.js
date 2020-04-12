@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
-import Modal from './Modal';
-import Spinner from './Spinners/ModalSpinner';
-import Button from './Button';
-import classes from './NavBar.module.css';
+import Modal from '../Modal';
+import Spinner from '../Spinners/ModalSpinner';
+import Button from '../Button/Button';
+import classes from './style.module.css';
 
-const FullscreenLoad = ({ handleHide }) => {
+const FullscreenLoad = ({ handleHide, message }) => {
   const [isMagnetAdded, setIsMagnetAdded] = useState(false);
   const [errors, setErrors] = useState(false);
 
@@ -26,9 +26,7 @@ const FullscreenLoad = ({ handleHide }) => {
                 marginBottom: '100px',
               }}
             >
-              <p style={{ fontSize: '1.1rem' }}>
-                Fetching torrent, please wait...
-              </p>
+              <p style={{ fontSize: '1.1rem' }}>{message}</p>
 
               <Button text={'Cancel'} clickAction={handleHide} />
             </div>

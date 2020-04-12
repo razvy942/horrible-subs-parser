@@ -4,11 +4,12 @@ import Carousel, { Dots } from '@brainhubeu/react-carousel';
 import '@brainhubeu/react-carousel/lib/style.css';
 import axios from 'axios';
 
-import Download from '../helpers/Download';
-import EpisodeBox from './EpisodeBox';
-import Hr from './UI/HorizontalLine';
-import Button from './UI/Button';
-import anilist from '../helpers/aniListApiWrapper';
+import Hr from '../UI/HorizontalLine/HorizontalLine';
+import Synopsis from '../UI/Synopsis/Synopsis';
+import Stats from '../UI/StatsDisplay/Stats';
+import CharactersDisplay from '../UI/CharactersDisplay/Characters';
+import Loading from '../UI/Loading/FullscreenLoad';
+import anilist from '../../helpers/aniListApiWrapper';
 import classes from './ShowInfo.module.css';
 
 const ShowInfo = (props) => {
@@ -82,73 +83,18 @@ const ShowInfo = (props) => {
       <div className={classes.container}>
         {showInfo ? (
           <div>
-            <div className={classes.infoContainer}>
-              <div className={classes.leftView}>
-                <img
-                  className={classes.showInfoImg}
-                  src={showInfo['image_url']}
-                  alt={`Cover art for ${showInfo.title}`}
-                ></img>
-                <button
-                  className={classes.episodesButton}
-                  onClick={() => console.log(' go to episodes')}
-                >{`View Episodes (${showInfo.episodes})`}</button>
-              </div>
-              <div className={classes.rightView}>
-                <h1 className={classes.title}>{showInfo.title}</h1>
-                <div className={classes.description}>{showInfo.synopsis}</div>
-              </div>
-            </div>
+            <Synopsis showInfo={showInfo} />
+
             <Hr />
-            <div className={classes.ratingsDisplay}>
-              <h1 style={{ textAlign: 'start' }}>Ratings</h1>
-              <p style={{ textAlign: 'start' }}>{showInfo.score}</p>
-              <div className={classes.scoreDistribution}>
-                {Object.keys(showInfo.scores).map((score, index) => (
-                  <span key={index}>
-                    {score}: {showInfo.scores[score]['votes']}
-                  </span>
-                ))}
-              </div>
-            </div>
+            <Stats showInfo={showInfo} />
+
             <Hr />
-            <div className={classes.charactersDisplay}>
-              <h1 style={{ textAlign: 'start', marginBottom: '10px' }}>
-                Characters
-              </h1>
-              {/* <div className={classes.charactersDisplay}> */}
-              <Carousel
-                slidesPerPage={10}
-                animationSpeed={500}
-                keepDirectionWhenDragging
-              >
-                {showInfo.characters.map((character, index) => (
-                  <div key={index} className={classes.characterDisplay}>
-                    <img
-                      className={classes.characterPortrait}
-                      src={character['image_url']}
-                    />
-                    <div>
-                      <span>{character.name}</span>
-                      <span>
-                        {character['voice_actors'].map(
-                          (i, index) =>
-                            i.language === 'Japanese' && (
-                              <span key={index}>{i.name}</span>
-                            )
-                        )}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </Carousel>
-              {/* </div> */}
-            </div>
+            <CharactersDisplay showInfo={showInfo} />
           </div>
         ) : error ? (
           'There was an error, try again'
         ) : (
-          'Loading'
+          <Loading message="Fetching info, please wait" />
         )}
       </div>
 

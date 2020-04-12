@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-import AnimeContainer from './UI/AnimeContainer';
-import Button from './UI/Button';
+import AnimeContainer from './UI/AnimeContainer/AnimeContainer';
+import Button from './UI/Button/Button';
 import Spinner from './UI/Spinners/Spinner';
 import classes from './MainPage.module.css';
 

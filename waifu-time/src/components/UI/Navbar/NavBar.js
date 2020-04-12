@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 
-import Modal from './Modal';
-import Slider from './Slider';
-import Button from './Button';
-import classes from './NavBar.module.css';
+import Modal from '../Modal';
+import Slider from '../Slider/Slider';
+import Button from '../Button/Button';
+import classes from './style.module.css';
 
 const NavBar = (props) => {
   const [showModal, setShowModal] = useState(false);
@@ -59,22 +59,22 @@ const NavBar = (props) => {
       <div className={classes.links}>
         <ul>
           <li>
-            <NavLink exact activeClassName={classes.active} to='/'>
+            <NavLink exact activeClassName={classes.active} to="/">
               Home
             </NavLink>
           </li>
           <li>
-            <NavLink activeClassName={classes.active} to='/all-shows'>
+            <NavLink activeClassName={classes.active} to="/all-shows">
               See All shows
             </NavLink>
           </li>
           <li>
-            <NavLink activeClassName={classes.active} to='/player'>
+            <NavLink activeClassName={classes.active} to="/player">
               Player Navlink
             </NavLink>
           </li>
           <li>
-            <NavLink activeClassName={classes.active} to='/manage-downloads'>
+            <NavLink activeClassName={classes.active} to="/manage-downloads">
               Manage Downloads
             </NavLink>
           </li>
@@ -83,7 +83,7 @@ const NavBar = (props) => {
       <div className={classes.searchBox}>
         <input
           className={classes.searchInput}
-          placeholder='Search for something to watch'
+          placeholder="Search for something to watch"
         ></input>
       </div>
       <div className={classes.profile}>
